@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+long long fat(int, int );
+int main() {
+    int a, b;
+    printf("Digite dois valores:");
+    scanf("%d %d", &a, &b);
+    printf("%d x %d = %d\n", a , b,  fat(a, b));
+    return 0;
+}
+long long fat(int a, int b){
+    if (b == 1){
+        return a; //Solução Trivial  
+    }
+    return fat(a, b - 1) + a; //Solução Geral
+}

@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
     {
         printf("Total da compra:");
             scanf("%d", &valor);
-		printf("Valor pago pelo cliente:");
+	printf("Valor pago pelo cliente:");
             scanf("%d", &valor_cliente);
             resto = (valor_cliente - valor);
             printf("Valor de troco: R$ %d\n", resto);

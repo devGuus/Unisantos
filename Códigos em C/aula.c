@@ -1,5 +1,6 @@
 /* Varias Funcões e testes meus em linguagem C */
 #include <stdio.h>
+#include <math.h>
 
 // While em C
 /*
@@ -73,6 +74,7 @@ printfvetor(int n, int v[])
 		printf("%d", v[n-1]);
 	}
 }*/
+/*
 int resultado(int);
 int main() //Calculando fatorial de forma recursiva
 {
@@ -98,4 +100,70 @@ fatorial(int x)
     }
 
     return resultado;
+}*/
+
+#define MAX 300
+
+typedef struct {
+    int peso;
+    int valor;
+} peso_valor;
+
+peso_valor mochila_rec(int [], int [], int, int, int);
+void mochila(int [], int [], int, int);
+
+int main()
+{
+    int n, pac;
+    int peso[MAX], valor[MAX];
+    peso_valor result;
+
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++) {
+        scanf("%d", &pac);
+        for (int i = 0; i < pac; i++) {
+            scanf("%d %d", &valor[i], &peso[i]);
+        }
+        //mochila(peso, valor, 50, pac);
+        result = mochila_rec(peso, valor, 50, pac, 0);
+        printf("%d brinquedos\nPeso: %d kg\n\n", result.valor, result.peso);
+    }
+    return 0;
+}
+
+void mochila(int p[], int v[], int c, int n)
+{
+    int pos, valor, peso, max_brinq = 0, max_peso, m = (int) pow(2, n);
+    for (int i = 0; i < m; i++) {
+        valor = peso = 0;
+        for (int j = 0; j < n; j++) {
+            pos = (i >> j) % 2;
+            if (pos == 1) {
+                valor += v[j];
+                peso += p[j];
+            }
+        }
+        if (peso <= c && valor > max_brinq) {
+            max_brinq = valor;
+            max_peso = peso;
+        }
+    }
+    printf("%d brinquedos\nPeso: %d kg\n\n", max_brinq, max_peso);
+}
+
+peso_valor mochila_rec(int p[], int v[], int c, int n, int item)
+{
+    peso_valor r = { 0, 0}, r_max, l_max;
+    if (c == 0 || item >= n) {
+        return r;
+    }
+    if (p[item] > c) {
+        return mochila_rec(p, v, c, n, item + 1);
+    }
+    r = mochila_rec(p, v, c - p[item], n, item + 1);
+    r_max.valor = v[item] + r.valor;
+    r_max.peso = p[item] + r.peso;
+
+    l_max = mochila_rec(p, v, c, n, item + 1);
+    return (r_max.valor > l_max.valor ? r_max : l_max);
 }

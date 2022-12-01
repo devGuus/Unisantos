@@ -102,6 +102,7 @@ fatorial(int x)
     return resultado;
 }*/
 
+/*
 #define MAX 300
 
 typedef struct {
@@ -166,4 +167,34 @@ peso_valor mochila_rec(int p[], int v[], int c, int n, int item)
 
     l_max = mochila_rec(p, v, c, n, item + 1);
     return (r_max.valor > l_max.valor ? r_max : l_max);
+}*/
+
+//contador de espaço
+int esp(const char[*]);
+int main(){
+
+	char palavra[40]; //quantidade maxima de letras (espaço tambem conta)
+	int i, espaco;
+
+	printf("Digiite uma frase");
+		scanf("%c[^\n]", &palavra);
+
+	if(esp(palavra) == 1){
+		printf("Possui somente um espacamento na frase");
+	}else{
+		prinft("Possui %d espacos na frase");
+	}
+
+	return 0;
+}
+
+int esp(const char palav[40]){
+	int i, espacos = 0;
+
+    for(i=0; i<strlen(palav); i++) {
+        if(palav[i] == 32) {
+            espacos++;
+        }
+    }
+    return espacos;
 }

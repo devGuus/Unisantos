@@ -17,3 +17,10 @@ valor1 = int(input())
 valor2 = int(input())
 prod = valor1 * valor2
 print("PROD = %d" %prod)
+
+# Exercicio N°1017 Gasto de combustível
+
+tempoGasto = int(input())
+vel = int(input())
+cont = (tempoGasto * vel) / 12 # O carro faz 12Km/L
+print("%.3f" %cont) # Somente 3 números após a virgula

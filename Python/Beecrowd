@@ -11,4 +11,9 @@ n = 3.14159
 area = n * (raio**2)
 print("A=%.4f" %area)
 
-#Exercicio
+#Exercicio  N° 1004 Produto Simples
+
+valor1 = int(input())
+valor2 = int(input())
+prod = valor1 * valor2
+print("PROD = %d" %prod)

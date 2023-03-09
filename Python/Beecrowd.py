@@ -110,3 +110,18 @@ print("%d moeda(s) de R$ 0.10" % dezcents)
 print("%d moeda(s) de R$ 0.05" % cincocents)
 print("%d moeda(s) de R$ 0.01" % cents)
 
+
+# Exercicio 1029 Fibonacci, Quantas chamadas?  Ex Accept!
+
+call = [1, 1]
+final = [0, 1]
+for i in range(2, 41):
+    call.append(call[i - 1] + call[i - 2] + 1)
+    final.append(final[i - 1] + final[i - 2])
+
+t = int(input())
+while (t > 0):
+    n = int(input())
+    print("fib(%d) = %d calls = %d" % (n, call[n] - 1, final[n]))
+    t -= 1
+

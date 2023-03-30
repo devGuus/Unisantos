@@ -1,44 +1,61 @@
 #include <stdio.h>
 
-void heap(int arr[], int n, int i) {
-  int maior_el = i;
-  int l = 2 * i + 1;
-  int r = 2 * i + 2;
+void heapfy(int arr[], int n, int i){
+  int smallraiz = i;
+  int esquerda = 2 * i + 1;
+  int direita = 2 * i + 2;
+  //heap maximo arr[esquerda] > && minimo arr[esquerda] < ----
+  if(esquerda < n && arr[esquerda] > arr[smallraiz]) //verificando o lado esquerdo
+  {
+    smallraiz = esquerda;
+  }
 
-  if (l < n && arr[l] > arr[maior_el])
-    maior_el = l;
+  if(direita < n && arr[direita] > arr[smallraiz]) //verificando o lado direito
+  {
+    smallraiz = direita;
+  }
+  //se a raiz ainda não seja o menor elemento -->
+  if(smallraiz != i){
+    int aux = arr[i];
+    arr[i] = arr[smallraiz];
+    arr[smallraiz] = aux;
 
-  if (r < n && arr[r] > arr[maior_el])
-    maior_el = r;
-
-  if (maior_el != i) {
-    int temp = arr[i];
-    arr[i] = arr[maior_el];
-    arr[maior_el] = temp;
-
-    heap(arr, n, maior_el);
+    heapfy(arr, n, smallraiz);
+    
   }
 }
 
-void build_heap(int arr[], int n) {
-  for (int i = n / 2 - 1; i >= 0; i--)
-    heap(arr, n, i);
+void build_minimo(int arr[], int n){
+  int i;
+  for(i = n / 2 - 1; i >= 0; i--)
+    heapfy(arr, n, i);
 }
 
-void print_array(int arr[], int n) {
-  for (int i = 0; i < n; ++i)
+void print_vetor(int arr[], int n){
+  int i;
+  for(i = 0; i < n; i++){
     printf("%d ", arr[i]);
+  }  
   printf("\n");
 }
 
-int main() {
-  int a[] = {10, 4, 6, 1, 5, 8, 3};
-  int n_a = sizeof(a) / sizeof(a[0]);
+int main(){
 
-  build_heap(a, n_a);
+  int a[7] = { 10, 4, 6, 1, 5, 8, 3 };
+  int b[9] = { 6, 2, 7, 9, 1, 8, 10, 4, 11 };
 
-  printf("Vetor a (heap máximo):\n");
-  print_array(a, n_a);
+  int metadeA = sizeof(a) / sizeof(a[7]); //recebendo o vetor em bytes e dividindo
+  int metadeB = sizeof(b) / sizeof(b[9]);
+
+  build_minimo(a, metadeA); //chamando a função para contruir a arvore
+  build_minimo(b, metadeB);
+  
+  printf("Heap Mínimo do vetor a: \n");
+  print_vetor(a, metadeA); //função que vai printar o vetor
+  
+  printf("Heap Mínimo do vetor b: \n");
+  print_vetor(b, metadeB);
 
   return 0;
 }
+

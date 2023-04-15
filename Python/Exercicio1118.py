@@ -1,7 +1,5 @@
 #exercicio 1118 Beecrowd
-cont = 0
-while cont != 2:
-  
+while True:
   nota1 = float(input()) # recebendo as notas
   while nota1 < 0 or nota1 > 10: # verifica a nota 1
     print("nota invalida") # avisa valor invalido
@@ -13,7 +11,7 @@ while cont != 2:
     nota2 = float(input())
     
   media = (nota1 + nota2) / 2 # calcula a media
-  print("media =", media)
+  print("media = {:.2f}" .format(media))
   
   opcao = 0
   while opcao != 1 and opcao != 2:

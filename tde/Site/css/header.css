@@ -1,0 +1,29 @@
+header {
+    gap: 2rem;
+    position: absolute;
+    gap: 2rem;
+    top: 45px;
+    left: 20px;
+}
+
+.logo {
+    background-color: red;
+    width: 120px;
+    gap: 2rem;
+
+}
+
+nav {
+    display: flex;
+    justify-content: end;
+    padding: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+}
+
+.header-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}

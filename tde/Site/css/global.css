@@ -1,5 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@1,300;1,500&display=swap');
+:root{
+    --send: rgb(9, 199, 224);
+    --fundo: rgb(1, 34, 69);
+    --txt: rgb(0, 0, 0);
+    --txt_white: rgb(255, 255, 255);
+    --color_button: #19bc8b;
+    --font_header: Verdana;
+    --font_principal: 'Fira Sans';
+
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+}
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 body {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    color: white;
-    background-color: rgb(228, 228, 228);
+    font-family: var(--font_principal);
+}
+
+a{
+    text-decoration: none;
 }

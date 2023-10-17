@@ -1,0 +1,29 @@
+.logo {
+    width: 100px;
+}
+
+#navnar {
+    width: 100%;
+    height: 80px;
+    background: #111;
+    color: #eee;
+}
+
+#navbar-container {
+    display: flex;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#navbar-itens {
+    display: flex;
+    list-style: none;
+    text-transform: uppercase;
+}
+
+#navbar-itens li {
+    padding: 15px;
+}

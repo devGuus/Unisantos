@@ -1,16 +1,41 @@
-.btn{
+.btn {
     display: inline-block;
     padding: 15px 60px;
     background: #111;
     color: #d9d7d7;
     border-radius: 5px;
     transition: background 500ms ease;
-    
+
     font-size: 1.1rem;
     text-transform: uppercase;
 }
 
-.btn:hover{
+.btn:hover {
     cursor: pointer;
     background: #000;
+}
+
+#fundo {
+    height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #eee;
+    background: url('/TDE/Site/imagens/plataforma.jpg') no-repeat center center/cover;
+    /* Overlay */
+    background-color: rgba(0, 0, 0, 0.2);
+    background-blend-mode: color;
+}
+
+#fundo-container {
+    text-align: center;
+}
+
+#fundo-container h2 {
+    font-size: 2.5rem;
+}
+
+#fundo-container p {
+    font-size: 1.2rem;
+    padding: 7px 0;
 }

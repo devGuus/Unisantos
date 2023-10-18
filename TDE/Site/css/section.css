@@ -81,5 +81,73 @@
 }
 
 .codeImg{
-    width: 800px;
+    width: 700px;
+}
+/* Integrantes do grupo */
+#grupo{
+    width: 100%;
+    background: #222;
+    color: #eee;
+    padding: 50px;
+}
+
+#grupo-container{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.aluno{
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    background: #333;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+.aluno .aluno-img{
+    height: 200px;
+    width: auto;
+    border-radius: 50%;
+    margin: 15px;
+}
+/* Fotos */
+
+#imagens{
+    width: 90%;
+    margin: auto;
+    padding: 50px;
+}
+
+#imagens-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+    justify-content: center;
+}
+
+#imagem-galeria{
+    display: inline-block;
+    width: 460px;
+    height: 280px;
+    border-radius: 5px;
+}
+/* Footer */
+#footer{
+    display: flex;
+    background: #222;
+    color: #eee;
+    padding: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#footericons .footer-icone{
+    width: 60px;
+    height: 60px;
 }

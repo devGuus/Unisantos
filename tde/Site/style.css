@@ -2,6 +2,7 @@
 @import "./css/header.css";
 @import "./css/section.css";
 @import "./css/nav.css";
+@import "./css/mobile.css";
 
 * {
     margin: 0;

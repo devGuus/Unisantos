@@ -1,0 +1,71 @@
+@media screen and (max-width: 768px){
+    #navbar{
+        height: 180px;
+    }
+
+    #navbar-container{
+        flex-direction: column;
+        padding: 20px 0;
+    }
+
+    #navbar-itens{
+        flex-direction: column;
+        text-align: center;
+        width: 100px;
+    }
+
+    #navbar-itens li{
+        padding: 10px;
+    }
+
+    #navbar-itens li:nth-child(2){ /* seleciona o segundo li */
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+    }
+    /* Fundo*/
+    #fundo-container{
+        padding: 40px;
+    }
+    /* Ferramentas */
+    #tools-container{
+    grid-template-columns: repeat(2, 1fr);
+    }
+
+    .toolsIcons{
+        width: 50%;
+    }
+
+    /* Projeto */
+    #project-container{
+        grid-template-columns: 1fr;
+    }
+
+    #project-container .frames:nth-child(2){
+        margin: 15px 0;
+    }
+    /* code */
+    #code-container{
+        flex-direction: column;
+    }
+
+    #infos{
+        width: 90%;
+    }
+    .info{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    /* Integrantes do grupo */
+    #grupo-container{
+        flex-direction: column;
+        text-align: center;
+    }
+    /* Fotos */
+    #imagens-container{
+        grid-template-columns: 1fr;
+    }
+    #imagem-galeria{
+        width: 100%;
+    }
+}

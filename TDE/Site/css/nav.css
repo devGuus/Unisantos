@@ -1,14 +1,16 @@
 #navbar {
     width: 100%;
     height: 65px;
-    background: #dcdbdb;
-    color: #0e0e0e;
+    background: var(--fundo_nav);
+    color: var(--txt);
     position: fixed;
+    border-radius: 5px;
 }
 
 .logo { 
     width: 100px;
 }
+
 #navbar-container {
     display: flex;
     width: 80%;
@@ -25,10 +27,12 @@
 }
 
 #navbar-itens li {
+    font-family: var(--font_principal);
+    font-weight: 400;
     padding: 15px;
-    color: #333;
+    color: var(--txt);
 }
 
 #navbar-itens li:hover {
-    color: #000;
+    color: var(--txt_Mblack);
 }

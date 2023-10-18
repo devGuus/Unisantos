@@ -31,7 +31,7 @@
 /* Projeto */
 #project {
     width: 100%;
-    background: #111;
+    background: var(--fundo_section);
     color: #eee;
     padding: 50px;
 }
@@ -86,7 +86,7 @@
 /* Integrantes do grupo */
 #grupo{
     width: 100%;
-    background: #222;
+    background: var(--fundo_section);
     color: #eee;
     padding: 50px;
 }
@@ -139,7 +139,7 @@
 /* Footer */
 #footer{
     display: flex;
-    background: #222;
+    background: var(--fundo_section);
     color: #eee;
     padding: 30px;
     flex-direction: column;

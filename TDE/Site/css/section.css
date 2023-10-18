@@ -111,7 +111,7 @@
 
 .aluno .aluno-img{
     height: 200px;
-    width: auto;
+    width: 180px;
     border-radius: 50%;
     margin: 15px;
 }
@@ -144,10 +144,28 @@
     padding: 30px;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
-
 
 #footericons .footer-icone{
     width: 60px;
     height: 60px;
+    margin: 0 15px;
+}
+
+#footer-links{
+    display: flex;
+    list-style: none;
+    text-transform: uppercase;
+    padding: 20px 0 0 0;
+}
+
+.footer-link{
+    font-size: 0.9rem;
+    padding: 20px;
+}
+
+.footer-link:hover{
+    color: #cacaca;
+    font-size: 1rem;
 }

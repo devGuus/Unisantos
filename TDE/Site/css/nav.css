@@ -1,14 +1,14 @@
-.logo {
+#navbar {
+    width: 100%;
+    height: 65px;
+    background: #dcdbdb;
+    color: #0e0e0e;
+    position: fixed;
+}
+
+.logo { 
     width: 100px;
 }
-
-#navnar {
-    width: 100%;
-    height: 80px;
-    background: #111;
-    color: #eee;
-}
-
 #navbar-container {
     display: flex;
     width: 80%;
@@ -26,4 +26,9 @@
 
 #navbar-itens li {
     padding: 15px;
+    color: #333;
+}
+
+#navbar-itens li:hover {
+    color: #000;
 }

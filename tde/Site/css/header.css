@@ -24,7 +24,7 @@
     justify-content: center;
     align-items: center;
     color: #eee;
-    background: url('/TDE/Site/imagens/plataforma.jpg') no-repeat center center/cover;
+    background: url('../imagens/plataforma.jpg') no-repeat center center/cover;
     /* Overlay */
     background-color: rgba(0, 0, 0, 0.2);
     background-blend-mode: color;

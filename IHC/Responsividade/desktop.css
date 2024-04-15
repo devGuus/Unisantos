@@ -1,0 +1,29 @@
+@media screen and (min-width: 1130px) {
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    header ul {
+        display: flex;
+    }
+
+    header a {
+        border: none;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        padding: 30px 15px;
+        gap: 30px;
+    }
+
+    .cards{
+       margin-top: 30px;
+       display: grid;
+       grid-template-columns: repeat(3, 1fr);
+       gap: 20px;
+    }
+}

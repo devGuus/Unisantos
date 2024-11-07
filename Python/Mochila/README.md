@@ -72,9 +72,11 @@ Em seguida, o historico_de_fitness é inicializado com a média de fitness da po
 ###### Exibe-se o peso máximo e os itens disponíveis, com seus pesos e valores.
 ###### Exibe-se alguns exemplos de boas soluções na população final.
 ![image](https://github.com/user-attachments/assets/39aa3b16-6fb5-4574-b136-e4827cd3810a)
+![image](https://github.com/user-attachments/assets/3aad68d2-b78a-4286-90c8-9db02e1e83d2)
 
 ### Gráfico da Evolução do Fitness
 ![image](https://github.com/user-attachments/assets/dc7ff453-d401-4433-a6e1-520bf29afb81)
+![image](https://github.com/user-attachments/assets/398af4fe-48a4-4dbb-811c-00ff731bdbd0)
 
 ### Como Usar
 Clone o repositório, configure os parâmetros desejados (como peso, peso maximo e número de cromossomos) e execute o script principal para observar a evolução das soluções geradas pelo algoritmo genético.

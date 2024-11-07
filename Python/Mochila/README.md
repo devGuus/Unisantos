@@ -3,7 +3,7 @@ Este repositório implementa um algoritmo genético para resolver o problema da 
 
 ### Bibliotecas
 O código usa apenas funções da biblioteca padrão do Python, como getrandbits, randint, random e choice, para geração de valores aleatórios e seleção.
-![image](https://github.com/user-attachments/assets/ad26d8ea-bebc-4330-9c9e-5e4104f58108){: width="50%"}
+![image](https://github.com/user-attachments/assets/ad26d8ea-bebc-4330-9c9e-5e4104f58108)
 
 ## Funções
 ### 1. individual(n_de_itens)

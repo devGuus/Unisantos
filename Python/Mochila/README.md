@@ -25,7 +25,8 @@ Avalia o fitness (aptidão) de um indivíduo:
 Calcula o peso_total e o valor_total do indivíduo somando os pesos e valores dos itens incluídos (bits 1).
 Se o peso_total exceder peso_maximo, retorna -1, indicando uma solução inválida.
 Caso contrário, retorna o valor_total, que representa a qualidade do indivíduo. Quanto maior o valor, melhor a solução.
-![image](https://github.com/user-attachments/assets/134a4321-7b2c-4273-a979-9ea1ed1a3351)
+![image](https://github.com/user-attachments/assets/1bc94301-7602-4894-bf83-88fee1b9d289)
+
 
 ### 4. media_fitness(populacao, peso_maximo, pesos_e_valores)
 Calcula a média de fitness da população, considerando apenas os indivíduos válidos (aqueles que não excedem o peso máximo). Retorna a média de fitness, útil para monitorar o desempenho médio da população ao longo das gerações.
@@ -46,6 +47,34 @@ A reprodução gera novos indivíduos (filhos) ao combinar metade dos bits do pa
 
 A mutação faz que o filho tenha uma pequena chance (mutate) de sofrer mutação, onde um bit aleatório é invertido (de 1 para 0 ou vice-versa), adicionando diversidade genética.
 ![image](https://github.com/user-attachments/assets/2e9bfcef-1089-4fe0-ac6e-453780419bd8)
+
+### Parâmetros de Entrada
+###### pesos_e_valores: Lista onde cada item é representado por [peso, valor]. No exemplo, são 10 itens com diferentes pesos e valores.
+###### peso_maximo: Limite de peso que a mochila pode carregar (100).
+###### n_de_cromossomos: Número de indivíduos em cada geração (150).
+###### geracoes: Número de gerações que o algoritmo irá evoluir (80).
+###### n_de_itens: Calculado com len(pesos_e_valores), representa o número total de itens disponíveis.
+![image](https://github.com/user-attachments/assets/23cc7865-d11a-4aa8-8d2d-6f0ba79b369d)
+
+
+## Executando o Algoritmo
+### Criação da população e Evolução das Gerações
+Inicializa-se a população com n_de_cromossomos indivíduos, onde cada indivíduo contém n_de_itens bits representando os itens escolhidos. 
+Em seguida, o historico_de_fitness é inicializado com a média de fitness da população inicial.
+##### Para cada geração:
+###### A função evolve evolui a população, criando uma nova geração de indivíduos.
+###### Calcula-se a média de fitness da nova geração e adiciona-se ao historico_de_fitness.
+![image](https://github.com/user-attachments/assets/b123afaf-555e-466d-b933-7ebda17892ec)
+
+### Resultados pelo Terminal
+##### Ao final da execução, é mostrado no terminal alguns resultados:
+###### Mostra-se o valor médio da mochila para cada geração, permitindo ver a melhoria ao longo das gerações.
+###### Exibe-se o peso máximo e os itens disponíveis, com seus pesos e valores.
+###### Exibe-se alguns exemplos de boas soluções na população final.
+![image](https://github.com/user-attachments/assets/39aa3b16-6fb5-4574-b136-e4827cd3810a)
+
+### Gráfico da Evolução do Fitness
+![image](https://github.com/user-attachments/assets/dc7ff453-d401-4433-a6e1-520bf29afb81)
 
 ### Como Usar
 Clone o repositório, configure os parâmetros desejados (como peso, peso maximo e número de cromossomos) e execute o script principal para observar a evolução das soluções geradas pelo algoritmo genético.

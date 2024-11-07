@@ -1,6 +1,12 @@
 # Preparando uma mochila para um acampamento
 Este repositório implementa um algoritmo genético para resolver o problema da mochila, onde o objetivo é maximizar o valor dos itens escolhidos sem exceder um peso máximo.
 
+##### Sequência do Algoritmo Genético
+###### Inicialização: Cria-se uma população inicial de soluções candidatas.
+###### Avaliação (Fitness): Cada indivíduo é avaliado com a função fitness.
+###### Seleção de Pais: Indivíduos com melhor fitness são selecionados para reprodução.
+###### Reprodução e Mutação: A partir dos pais, novos indivíduos são gerados com a possibilidade de mutação.
+###### Nova Geração: O processo se repete com as novas gerações, visando a otimização da solução.
 ### Bibliotecas
 O código usa apenas funções da biblioteca padrão do Python, como getrandbits, randint, random e choice, para geração de valores aleatórios e seleção.
 ![image](https://github.com/user-attachments/assets/ad26d8ea-bebc-4330-9c9e-5e4104f58108)
@@ -35,16 +41,11 @@ Retorna um par de indivíduos (pai e mãe) para reprodução.
 ### 6. evolve(populacao, peso_maximo, pesos_e_valores, n_de_cromossomos, mutate=0.05)
 ##### Realiza a evolução da população:
 Seleciona os pais validos, filtrando e ordenando de acordo com seu fitness.
+
 A reprodução gera novos indivíduos (filhos) ao combinar metade dos bits do pai e metade da mãe.
+
 A mutação faz que o filho tenha uma pequena chance (mutate) de sofrer mutação, onde um bit aleatório é invertido (de 1 para 0 ou vice-versa), adicionando diversidade genética.
+![image](https://github.com/user-attachments/assets/2e9bfcef-1089-4fe0-ac6e-453780419bd8)
 
-##### Fluxo do Algoritmo Genético
-###### Inicialização: Cria-se uma população inicial de soluções candidatas.
-###### Avaliação (Fitness): Cada indivíduo é avaliado com a função fitness.
-###### Seleção de Pais: Indivíduos com melhor fitness são selecionados para reprodução.
-###### Reprodução e Mutação: A partir dos pais, novos indivíduos são gerados com a possibilidade de mutação.
-###### Nova Geração: O processo se repete com as novas gerações, visando a otimização da solução.
-####
-
-Como Usar
-Clone o repositório, configure os parâmetros desejados (como peso_maximo e n_de_cromossomos) e execute o script principal para observar a evolução das soluções geradas pelo algoritmo genético.
+### Como Usar
+Clone o repositório, configure os parâmetros desejados (como peso, peso maximo e número de cromossomos) e execute o script principal para observar a evolução das soluções geradas pelo algoritmo genético.

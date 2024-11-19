@@ -1,15 +1,15 @@
 from random import getrandbits, randint, random, choice
 
+# Gerando um membro da populacao
 def individual(n_de_itens):
-    """Cria um membro da populacao"""
     return [ getrandbits(1) for x in range(n_de_itens) ]
 
+# função que gera a populacao
 def population(n_de_individuos, n_de_itens):
-    """"Cria a populacao"""
     return [ individual(n_de_itens) for x in range(n_de_individuos) ]
 
+# função que avalia o individuo
 def fitness(individuo, peso_maximo, pesos_e_valores):
-    """Faz avaliacao do individuo"""
     peso_total, valor_total = 0, 0
     for indice, valor in enumerate(individuo):
         peso_total += (individuo[indice] * pesos_e_valores[indice][0])
@@ -19,20 +19,17 @@ def fitness(individuo, peso_maximo, pesos_e_valores):
         return -1 #retorna -1 no caso de peso excedido
     return valor_total #se for um individuo valido retorna seu valor, sendo maior melhor
 
-def media_fitness(populacao, peso_maximo, pesos_e_valores): #só leva em consideracao os elementos que respeitem o peso maximo da mochila
-    """Encontra a avalicao media da populacao"""
+# função que encontra a avalicao media da populacao
+def media_fitness(populacao, peso_maximo, pesos_e_valores):
     summed = sum(fitness(x, peso_maximo, pesos_e_valores) for x in populacao if fitness(x, peso_maximo, pesos_e_valores) >= 0)
     return summed / (len(populacao) * 1.0)
 
+# Seleciona um pai e uma mae baseado nas regras da roleta
 def selecao_roleta(pais):
-    """Seleciona um pai e uma mae baseado nas regras da roleta"""
     def sortear(fitness_total, indice_a_ignorar=-1): #2 parametro garante que não vai selecionar o mesmo elemento
-        """Monta roleta para realizar o sorteio"""
-        roleta, acumulado, valor_sorteado = [], 0, random()
-
+        roleta, acumulado, valor_sorteado = [], 0, random() # Monta roleta para realizar o sorteio
         if indice_a_ignorar!=-1: #Desconta do total, o valor que sera retirado da roleta
             fitness_total -= valores[0][indice_a_ignorar]
-
         for indice, i in enumerate(valores[0]):
             if indice_a_ignorar==indice: #ignora o valor ja utilizado na roleta
                 continue
@@ -52,8 +49,8 @@ def selecao_roleta(pais):
     
     return pai, mae
 
+# Tabula cada individuo e o seu fitness
 def evolve(populacao, peso_maximo, pesos_e_valores, n_de_cromossomos, mutate=0.05): 
-    """Tabula cada individuo e o seu fitness"""
     pais = [ [fitness(x, peso_maximo, pesos_e_valores), x] for x in populacao if fitness(x, peso_maximo, pesos_e_valores) >= 0]
     pais.sort(reverse=True)
     

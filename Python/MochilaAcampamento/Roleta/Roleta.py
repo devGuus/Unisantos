@@ -14,66 +14,70 @@ geracoes = 300
 link_arquivo = "https://raw.githubusercontent.com/devGuus/Unisantos/refs/heads/main/Python/MochilaAcampamento/Roleta/itens_acampamento.txt"
 itens_gerados = carregar_itens(link_arquivo)
 
-from random import randint, random
+n_de_itens = len(itens_gerados)
 
-#EXECUCAO DOS PROCEDIMENTOS
+from matplotlib import pyplot as plt
+
+# Função para calcular a média do fitness da população
+def media_fitness(populacao, peso_maximo, capacidade_volume, itens):
+    fitness_valores = [fitness(ind, peso_maximo, capacidade_volume, itens) for ind in populacao if fitness(ind, peso_maximo, capacidade_volume, itens) >= 0]
+    return sum(fitness_valores) / len(fitness_valores) if fitness_valores else 0
+
+# EXECUÇÃO DOS PROCEDIMENTOS
 fitness_maximo = []
 sucesso_rate = []
 
 populacao = population(n_de_cromossomos, n_de_itens)
-historico_de_fitness = [media_fitness(populacao, peso_maximo, pesos_e_valores)]
+historico_de_fitness = [media_fitness(populacao, peso_maximo, capacidade_volume, n_de_itens)]
+
 for i in range(geracoes):
-    populacao = evolve(populacao, peso_maximo, pesos_e_valores, n_de_cromossomos)
-    
+    populacao = evolve(populacao, peso_maximo, capacidade_volume, n_de_itens, n_de_cromossomos)
+
     # Adiciona o fitness médio da população à lista
-    historico_de_fitness.append(media_fitness(populacao, peso_maximo, pesos_e_valores))
+    historico_de_fitness.append(media_fitness(populacao, peso_maximo, capacidade_volume, n_de_itens))
 
     # Fitness máximo da geração
-    melhor_individuo = max(populacao, key=lambda x: fitness(x, peso_maximo, pesos_e_valores))
-    fitness_maximo.append(fitness(melhor_individuo, peso_maximo, pesos_e_valores))
-    
+    melhor_individuo = max(populacao, key=lambda x: fitness(x, peso_maximo, capacidade_volume, n_de_itens))
+    fitness_maximo.append(fitness(melhor_individuo, peso_maximo, capacidade_volume, n_de_itens))
+
     # Calculando a taxa de sucesso (percentual de soluções viáveis)
-    solucoes_viaveis = sum(1 for ind in populacao if fitness(ind, peso_maximo, pesos_e_valores) >= 0)
+    solucoes_viaveis = sum(1 for ind in populacao if fitness(ind, peso_maximo, capacidade_volume, n_de_itens) >= 0)
     sucesso_rate.append(solucoes_viaveis / len(populacao) * 100)
 
 # PRINTS NO TERMINAL
-# Exibindo a média de valor na mochila para cada geração e a melhor solução
+# Exibindo a média de necessidade na mochila para cada geração e a melhor solução
+print("\nEvolução das gerações:")
 for indice, dados in enumerate(historico_de_fitness):
-    # Melhor solução da geração (maior valor)
-    melhor_solucao = max(populacao, key=lambda x: fitness(x, peso_maximo, pesos_e_valores))
-    valor_melhor_solucao = fitness(melhor_solucao, peso_maximo, pesos_e_valores)
-    print(f"Geracao: {indice} | Média de valor na mochila: {dados} | Melhor solução: {valor_melhor_solucao} R$")
-
-# Exibindo o peso máximo e os itens disponíveis com informações adicionais
-print("\nPeso máximo:", peso_maximo, "g\n")
-print("Itens disponíveis:")
-for indice, i in enumerate(pesos_e_valores):
-    peso, valor = i
-    densidade = valor / peso  # Relação valor/peso
-    print(f"Item {indice + 1}: {peso}g | R$ {valor}")
+    # Melhor solução da geração
+    melhor_solucao = max(populacao, key=lambda x: fitness(x, peso_maximo, capacidade_volume, n_de_itens))
+    necessidade_melhor_solucao = fitness(melhor_solucao, peso_maximo, capacidade_volume, n_de_itens)
+    print(f"Geração: {indice} | Média de necessidade na mochila: {dados:.2f} | Melhor solução: {necessidade_melhor_solucao}")
 
 # Exibindo exemplos de boas soluções
 print("\nExemplos de boas soluções:")
 for i in range(5):
     individuo = populacao[i]
-    valor_individuo = fitness(individuo, peso_maximo, pesos_e_valores)
-    print(f"Cromossomo: {individuo} | Valor: R$ {valor_individuo} | Peso total: {sum(individuo[i] * pesos_e_valores[i][0] for i in range(len(individuo)))} g")
+    necessidade_individuo = fitness(individuo, peso_maximo, capacidade_volume, n_de_itens)
+    peso_total = sum(individuo[j] * n_de_itens[j]['peso'] for j in range(len(individuo)))
+    print(f"Cromossomo: {individuo} | Necessidade total: {necessidade_individuo} | Peso total: {peso_total}g")
 
-#GERADOR DE GRAFICO
-from matplotlib import pyplot as plt
-plt.plot(range(len(historico_de_fitness)), historico_de_fitness)
-plt.grid(True, zorder=0)
-plt.title("Problema da mochila")
-plt.xlabel("Geracao")
-plt.ylabel("Valor medio da mochila")
+# GRÁFICOS
+# Gráfico 1: Evolução do valor médio
+plt.figure(figsize=(10, 5))
+plt.plot(range(len(historico_de_fitness)), historico_de_fitness, label="Necessidade média", color="b")
+plt.title("Problema da Mochila - Evolução da Necessidade Média")
+plt.xlabel("Geração")
+plt.ylabel("Necessidade Média")
+plt.grid(True)
+plt.legend()
 plt.show()
 
 # Gráfico 2: Fitness máximo por geração
 plt.figure(figsize=(10, 5))
 plt.plot(range(len(fitness_maximo)), fitness_maximo, label="Fitness máximo", color="g")
-plt.title("Problema da Mochila - Fitness máximo por Geração")
+plt.title("Problema da Mochila - Fitness Máximo por Geração")
 plt.xlabel("Geração")
-plt.ylabel("Fitness máximo")
+plt.ylabel("Fitness Máximo")
 plt.grid(True)
 plt.legend()
 plt.show()
@@ -83,18 +87,18 @@ plt.figure(figsize=(10, 5))
 plt.plot(range(len(sucesso_rate)), sucesso_rate, label="Taxa de sucesso", color="r")
 plt.title("Problema da Mochila - Taxa de Sucesso por Geração")
 plt.xlabel("Geração")
-plt.ylabel("Taxa de sucesso (%)")
+plt.ylabel("Taxa de Sucesso (%)")
 plt.grid(True)
 plt.legend()
 plt.show()
 
 # Gráfico 4: Comparação do valor médio e fitness máximo por geração
 plt.figure(figsize=(10, 5))
-plt.plot(range(len(historico_de_fitness)), historico_de_fitness, label="Valor médio", color="b")
+plt.plot(range(len(historico_de_fitness)), historico_de_fitness, label="Necessidade média", color="b")
 plt.plot(range(len(fitness_maximo)), fitness_maximo, label="Fitness máximo", color="g", linestyle="--")
-plt.title("Problema da Mochila - Comparação entre Valor Médio e Fitness Máximo")
+plt.title("Problema da Mochila - Comparação entre Necessidade Média e Fitness Máximo")
 plt.xlabel("Geração")
-plt.ylabel("Valor da Mochila")
+plt.ylabel("Valor da Necessidade")
 plt.legend()
 plt.grid(True)
 plt.show()

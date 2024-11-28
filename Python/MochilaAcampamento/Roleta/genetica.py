@@ -1,4 +1,5 @@
 from random import getrandbits, randint, random, choice
+import urllib.request
 
 def carregar_itens(link):
     response = urllib.request.urlopen(link)
@@ -14,6 +15,8 @@ def carregar_itens(link):
             "categoria": categoria
         })
     return itens
+
+categorias_obrigatorias = {"comida"}  # Categorias essenciais para viabilidade
 
 # Função para gerar um indivíduo
 def individual(n_de_itens):

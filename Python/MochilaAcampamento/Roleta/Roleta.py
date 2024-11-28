@@ -1,21 +1,18 @@
-from Python.MochilaAcampamento.Roleta.genetica import *
-                #[peso,valor]
-# pesos_e_valores = [
-#     [9.4, 57], [7.4, 94], [7.7, 59], [7.4, 83], [2.9, 82],
-#     [1.1, 91], [7.3, 42], [9.0, 84], [8.1, 85], [7.2, 18],
-#     [7.5, 94], [4.2, 18], [4.4, 31], [5.7, 27], [2.0, 31],
-#     [2.0, 42], [9.9, 58], [9.5, 57], [5.2, 55], [7.1, 97],
-#     [6.8, 79], [1.6, 10], [7.9, 34], [3.0, 100], [1.6, 98],
-#     [9.0, 45], [2.1, 19], [4.9, 77], [7.0, 56], [6.8, 25],
-#     [7.7, 60], [2.1, 22], [8.4, 84], [1.9, 89], [6.5, 12],
-#     [3.8, 46], [2.5, 20], [4.3, 85], [9.9, 42], [8.5, 94]
-# ]
-# peso_maximo = 140
-pesos_e_valores = [[randint(1, 50), randint(10, 500)] for _ in range(10)]  # Gerar itens aleatórios
-peso_maximo = randint(50, 200)  # Peso máximo aleatório
+from genetica import *
+import urllib.request
+
+# Definir capacidade máxima da mochila
+peso_maximo = 100  # Peso máximo permitido
+capacidade_volume = 100  # Volume máximo permitido
+categorias_obrigatorias = {"conforto"}  # Categorias essenciais para viabilidade
+
+# Parâmetros do problema
 n_de_cromossomos = 150
-geracoes = 80
-n_de_itens = len(pesos_e_valores) #Analogo aos pesos e valores
+geracoes = 300
+
+# Carregar itens do arquivo TXT
+link_arquivo = "https://raw.githubusercontent.com/devGuus/Unisantos/refs/heads/main/Python/MochilaAcampamento/Roleta/itens_acampamento.txt"
+itens_gerados = carregar_itens(link_arquivo)
 
 from random import randint, random
 

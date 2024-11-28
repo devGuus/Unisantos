@@ -1,0 +1,50 @@
+Barraca compacta, 20,83,17, conforto
+Barraca leve, 22,94,14, conforto
+Cobertor térmico, 4,75,4, urgência
+Pasta de amendoim, 1,37,2, comida
+Kit de pesca, 3,83,2, ferramenta
+Cadeira dobrável, 7,54,9, conforto
+Mochila de campo, 11,85,9, conforto
+Colchonete inflável, 11,84,10, conforto
+Carne enlatada, 3,56,4, comida
+Barras de cereal, 2,67,1, comida
+Barraca de camping, 19,79,16, conforto
+Cobertor térmico, 1,73,3, urgência
+Faca de sobrevivência, 2,81,1, ferramenta
+Carne enlatada, 3,57,4, comida
+Corda de nylon, 6,91,4, ferramenta
+Pacote de arroz, 7,70,4, comida
+Pedernal, 3,74,2, ferramenta
+Corda resistente, 5,78,3, ferramenta
+Pedernal, 1,81,3, ferramenta
+Frutas desidratadas, 1,53,1, comida
+Garrafa térmica, 4,71,5, conforto
+Repelente contra insetos, 1,31,3, urgência
+Pacote de arroz, 7,67,6, comida
+Kit de primeiros socorros, 4,104,6, urgência
+Repelente de insetos, 1,33,2, urgência
+Cadeira dobrável, 7,42,9, conforto
+Frutas desidratadas, 2,52,2, comida
+Pasta de amendoim, 1,40,2, comida
+Mochila tática, 10,100,9, conforto
+Bússola de navegação, 3,76,3, ferramenta
+Carne enlatada, 3,47,3, comida
+Cobertor térmico, 3,71,2, urgência
+Colchonete inflável, 11,70,10, conforto
+Filtro de água portátil, 4,91,4, urgência
+Sinalizador de emergência, 3,81,2, urgência
+Pasta de amendoim, 2,30,3, comida
+Pacote de arroz, 6,77,3, comida
+Mochila de expedição, 10,105,10, conforto
+Filtro de água portátil, 3,76,2, urgência
+Filtro de água portátil, 4,82,4, urgência
+Bússola de orientação, 2,85,3, ferramenta
+Garrafa térmica, 3,67,5, conforto
+Frutas desidratadas, 4,57,4, comida
+Cobertor térmico, 1,74,4, urgência
+Colchonete inflável, 10,77,11, conforto
+Sinalizador, 2,94,2, urgência
+Barraca compacta, 20,92,17, conforto
+Filtro de água portátil, 3,89,2, urgência
+Bússola de campo, 1,89,2, ferramenta
+Bússola de navegação, 1,84,3, ferramenta

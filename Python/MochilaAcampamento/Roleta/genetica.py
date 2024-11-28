@@ -1,74 +1,111 @@
 from random import getrandbits, randint, random, choice
 
-# Gerando um membro da populacao
+def carregar_itens(link):
+    response = urllib.request.urlopen(link)
+    data = response.read().decode("utf-8")
+    itens = []
+    for linha in data.strip().split("\n"):
+        nome, peso, necessidade, volume, categoria = linha.split(",")
+        itens.append({
+            "nome": nome,
+            "peso": int(peso),
+            "necessidade": int(necessidade),
+            "volume": int(volume),
+            "categoria": categoria
+        })
+    return itens
+
+# Função para gerar um indivíduo
 def individual(n_de_itens):
-    return [ getrandbits(1) for x in range(n_de_itens) ]
+    return [getrandbits(1) for _ in range(n_de_itens)]
 
-# função que gera a populacao
+# Função para gerar a população inicial
 def population(n_de_individuos, n_de_itens):
-    return [ individual(n_de_itens) for x in range(n_de_individuos) ]
+    return [individual(n_de_itens) for _ in range(n_de_individuos)]
 
-# função que avalia o individuo
-def fitness(individuo, peso_maximo, pesos_e_valores):
-    peso_total, valor_total = 0, 0
+# Função de fitness
+def fitness(individuo, peso_maximo, capacidade_volume, itens):
+    peso_total, necessidade_total, volume_total = 0, 0, 0
+    categorias_selecionadas = set()
+    itens_selecionados = set()
+
     for indice, valor in enumerate(individuo):
-        peso_total += (individuo[indice] * pesos_e_valores[indice][0])
-        valor_total += (individuo[indice] * pesos_e_valores[indice][1])
+        if valor == 1:  # Se o item foi selecionado
+            item = itens[indice]
+            categoria = item["categoria"]
+            identificador = f"{categoria}-{indice}"
 
-    if (peso_maximo - peso_total) < 0:
-        return -1 #retorna -1 no caso de peso excedido
-    return valor_total #se for um individuo valido retorna seu valor, sendo maior melhor
+            # Penalizar duplicados
+            if identificador in itens_selecionados:
+                return -1
+            itens_selecionados.add(identificador)
 
-# função que encontra a avalicao media da populacao
-def media_fitness(populacao, peso_maximo, pesos_e_valores):
-    summed = sum(fitness(x, peso_maximo, pesos_e_valores) for x in populacao if fitness(x, peso_maximo, pesos_e_valores) >= 0)
-    return summed / (len(populacao) * 1.0)
+            # Soma peso, valor e volume
+            peso_total += item["peso"]
+            necessidade_total += item["necessidade"]
+            volume_total += item["volume"]
 
-# Seleciona um pai e uma mae baseado nas regras da roleta
+            # Rastrear categorias selecionadas
+            categorias_selecionadas.add(categoria)
+
+    # Penalizar se exceder peso ou volume máximo
+    if peso_total > peso_maximo or volume_total > capacidade_volume:
+        return -1
+
+    # Penalidades dinâmicas
+    faltantes = categorias_obrigatorias - categorias_selecionadas
+    if faltantes:
+      penalidade = 100  # Penalidade significativa por categoria ausente
+      necessidade_total -= penalidade * len(faltantes)
+
+    return necessidade_total if necessidade_total > 0 else -1  # Garantir fitness não negativo
+
+# Função de seleção por roleta viciada
 def selecao_roleta(pais):
-    def sortear(fitness_total, indice_a_ignorar=-1): #2 parametro garante que não vai selecionar o mesmo elemento
-        roleta, acumulado, valor_sorteado = [], 0, random() # Monta roleta para realizar o sorteio
-        if indice_a_ignorar!=-1: #Desconta do total, o valor que sera retirado da roleta
+    def sortear(fitness_total, indice_a_ignorar=-1):
+        roleta, acumulado, valor_sorteado = [], 0, random()
+        if indice_a_ignorar != -1:
             fitness_total -= valores[0][indice_a_ignorar]
         for indice, i in enumerate(valores[0]):
-            if indice_a_ignorar==indice: #ignora o valor ja utilizado na roleta
+            if indice == indice_a_ignorar:
                 continue
             acumulado += i
-            roleta.append(acumulado/fitness_total)
+            roleta.append(acumulado / fitness_total)
             if roleta[-1] >= valor_sorteado:
                 return indice
-    
-    valores = list(zip(*pais)) #cria 2 listas com os valores fitness e os cromossomos
+
+    valores = list(zip(*pais))
     fitness_total = sum(valores[0])
 
-    indice_pai = sortear(fitness_total) 
+    indice_pai = sortear(fitness_total)
     indice_mae = sortear(fitness_total, indice_pai)
 
     pai = valores[1][indice_pai]
     mae = valores[1][indice_mae]
-    
+
     return pai, mae
 
-# Tabula cada individuo e o seu fitness
-def evolve(populacao, peso_maximo, pesos_e_valores, n_de_cromossomos, mutate=0.05): 
-    pais = [ [fitness(x, peso_maximo, pesos_e_valores), x] for x in populacao if fitness(x, peso_maximo, pesos_e_valores) >= 0]
+# Função para evolução da população
+def evolve(populacao, peso_maximo, capacidade_volume, itens, n_de_cromossomos, mutate=0.05):
+    pais = [
+        [fitness(x, peso_maximo, capacidade_volume, itens), x]
+        for x in populacao
+        if fitness(x, peso_maximo, capacidade_volume, itens) >= 0
+    ]
     pais.sort(reverse=True)
-    
-    # REPRODUCAO
+
+    # Reprodução
     filhos = []
     while len(filhos) < n_de_cromossomos:
         homem, mulher = selecao_roleta(pais)
         meio = len(homem) // 2
         filho = homem[:meio] + mulher[meio:]
         filhos.append(filho)
-    
-    # MUTACAO
+
+    # Mutação
     for individuo in filhos:
         if mutate > random():
-            pos_to_mutate = randint(0, len(individuo)-1)
-            if individuo[pos_to_mutate] == 1:
-                individuo[pos_to_mutate] = 0
-            else:
-                individuo[pos_to_mutate] = 1
+            pos_to_mutate = randint(0, len(individuo) - 1)
+            individuo[pos_to_mutate] = 1 - individuo[pos_to_mutate]  # Troca entre 0 e 1
 
     return filhos

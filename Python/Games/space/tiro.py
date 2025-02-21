@@ -10,18 +10,6 @@ LARGURA, ALTURA = 800, 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Jogo de Tiro")
 
-# Carregamento de imagens
-try:
-    bg_image = pygame.image.load('Python/Games/space/imagens/bg_espaço_roxo.png')  
-    nave_player = pygame.image.load('Python/Games/space/imagens/nave.png')
-    nave_player = pygame.transform.scale(nave_player, (50, 50))  # Redimensionando para caber no player
-    github_icone = pygame.image.load('Python/Games/space/imagens/icone_github.png')
-    github_icone = pygame.transform.scale(github_icone, (40, 40))
-except pygame.error as e:
-    print(f"Erro ao carregar imagens: {e}")
-    pygame.quit()
-    exit()
-
 # Cores
 BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
@@ -59,6 +47,20 @@ clock = pygame.time.Clock()
 menu_font = pygame.font.Font(None, 50)
 menu_opcoes = ["Iniciar Jogo", "Opções", "Sair"]
 selecionar_opcoes = 0
+
+# Carregamento de imagens
+try:
+    bg_image = pygame.image.load('Python/Games/space/imagens/bg_espaço_roxo.png') # Background
+    nave_player = pygame.image.load('Python/Games/space/imagens/nave.png')
+    nave_player = pygame.transform.scale(nave_player, (50, 50))  # Redimensionando para caber no player
+    nave_enemy = pygame.image.load('Python/Games/space/imagens/enemy_nave.png')
+    nave_enemy = pygame.transform.scale(nave_enemy, (inimigo_width, inimigo_height))
+    github_icone = pygame.image.load('Python/Games/space/imagens/icone_github.png')
+    github_icone = pygame.transform.scale(github_icone, (40, 40))
+except pygame.error as e:
+    print(f"Erro ao carregar imagens: {e}")
+    pygame.quit()
+    exit()
 
 def draw_menu():
     tela.fill((0,0,0))
@@ -152,12 +154,13 @@ def main():
         
         # Spawn de inimigos
         if random.randint(1, 60) == 1:
-            inimigos.append(pygame.Rect(random.randint(0, LARGURA - inimigo_width), 0, inimigo_width, inimigo_height))
+            inimigos.append({"rect": pygame.Rect(random.randint(0, LARGURA - inimigo_width), 0, inimigo_width, inimigo_height), "img": nave_enemy})
+
         
         # Movimentação dos inimigos e eliminação
         for inimigo in inimigos[:]:
-            inimigo.y += inimigo_vel
-            if inimigo.y > ALTURA:
+            inimigo["rect"].y += inimigo_vel
+            if inimigo["rect"].y > ALTURA:
                 inimigos.remove(inimigo)
                 life -= damage_enemy_small
                 if life < 1:
@@ -166,11 +169,11 @@ def main():
         # Colisão entre balas e inimigos
         for bala in balas[:]:
             for inimigo in inimigos[:]:
-                if bala.colliderect(inimigo):
+                if bala.colliderect(inimigo["rect"]):
                     balas.remove(bala)
                     inimigos.remove(inimigo)
                     score += 1
-                    break            
+                    break           
 
         # Desenho na tela
         tela.blit(bg_image, (0, 0))
@@ -179,7 +182,8 @@ def main():
         for bala in balas:
             pygame.draw.rect(tela, VERMELHO, bala)
         for inimigo in inimigos:
-            pygame.draw.rect(tela, (0, 255, 0), inimigo)
+            tela.blit(inimigo["img"], (inimigo["rect"].x, inimigo["rect"].y))
+
         
         # Desenhando Score
         font = pygame.font.Font(None, 48)

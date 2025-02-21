@@ -1,12 +1,15 @@
 import pygame
 import random
 import webbrowser
+from pyvidplayer2 import Video
 
 # Inicialização do pygame
 pygame.init()
 
 # Configurações da tela
-LARGURA, ALTURA = 800, 600
+RESOLUCOES = [(800, 600), (1024, 768), (1280, 720)]
+resolucao_atual = 0  # Índice da resolução atual
+LARGURA, ALTURA = RESOLUCOES[resolucao_atual]
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Jogo de Tiro")
 
@@ -15,6 +18,9 @@ BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
 VERDE = (0, 255, 0)
 AZUL = (0, 0, 255)
+
+# Fonte personalizada (Press Start 2P)
+fonte_jogo = pygame.font.Font("Python/Games/space/Fonts/8-bit Arcade In.ttf", 60)
 
 # Placar
 score = 0
@@ -45,16 +51,24 @@ clock = pygame.time.Clock()
 
 # Botões do menu
 menu_font = pygame.font.Font(None, 50)
-menu_opcoes = ["Iniciar Jogo", "Opções", "Sair"]
+menu_opcoes = ["Iniciar Jogo", "Opçoes", "Sair"]
 selecionar_opcoes = 0
+
+# Vídeo menu
+video_menu = Video('Python/Games/space/movies/video_menu.mp4')
 
 # Carregamento de imagens
 try:
-    bg_image = pygame.image.load('Python/Games/space/imagens/bg_espaço_roxo.png') # Background
+    # Background
+    bg_image = pygame.image.load('Python/Games/space/imagens/bg_espaço_roxo.png') 
+    fundo_menu = pygame.image.load('Python/Games/space/imagens/imagem-fundo2.jpg')
+    # Redimensionar imagem player
     nave_player = pygame.image.load('Python/Games/space/imagens/nave.png')
-    nave_player = pygame.transform.scale(nave_player, (50, 50))  # Redimensionando para caber no player
+    nave_player = pygame.transform.scale(nave_player, (50, 50)) 
+    # Redimensionar imagem inimigo
     nave_enemy = pygame.image.load('Python/Games/space/imagens/enemy_nave.png')
     nave_enemy = pygame.transform.scale(nave_enemy, (inimigo_width, inimigo_height))
+    # Icone do GitHub
     github_icone = pygame.image.load('Python/Games/space/imagens/icone_github.png')
     github_icone = pygame.transform.scale(github_icone, (40, 40))
 except pygame.error as e:
@@ -63,23 +77,28 @@ except pygame.error as e:
     exit()
 
 def draw_menu():
-    tela.fill((0,0,0))
+    tela.fill((0, 0, 0))  # Garante que a tela fique preta antes de desenhar o vídeo
+    #video_menu.draw(tela, (0, 0))  # Desenha o vídeo cobrindo a tela inteira
+    tela.blit(fundo_menu, (0,0))
+
     for i, option in enumerate(menu_opcoes):
         color = VERDE if i == selecionar_opcoes else BRANCO
-        text = menu_font.render(option, True, color)
+        text = fonte_jogo.render(option, True, color)
         text_centralizar = text.get_rect(center=(LARGURA // 2, 250 + i * 60))
         tela.blit(text, text_centralizar)
     # Insere o icone do GitHub no canto da tela
     tela.blit(github_icone, (LARGURA - 50, ALTURA - 50))
-    pygame.display.flip()
+    pygame.display.update()
 
 def menu():
     global selecionar_opcoes
+    video_menu.restart()  # Reinicia o vídeo no início do menu
     rodando = True
     while rodando:
         draw_menu()
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
+                video_menu.close() # Fechar o video menu
                 pygame.quit()
                 exit()
             if evento.type == pygame.KEYDOWN:
@@ -91,7 +110,7 @@ def menu():
                     if selecionar_opcoes == 0:
                         return  # Start Game
                     elif selecionar_opcoes == 1:
-                        print("Opções ainda não implementadas")
+                        opcoes()
                     elif selecionar_opcoes == 2:
                         pygame.quit()
                         exit()
@@ -99,7 +118,51 @@ def menu():
                 x, y = evento.pos
                 if LARGURA - 50 <= x <= LARGURA and ALTURA - 50 <= y <= ALTURA:
                     webbrowser.open("https://github.com/devGuus")
-    
+def opcoes():
+    global som_ativo, resolucao_atual, LARGURA, ALTURA, tela
+
+    opcoes_lista = ["Som  ON", f"Resolucao  {RESOLUCOES[resolucao_atual][0]}x{RESOLUCOES[resolucao_atual][1]}", "Voltar"]
+    selecionar_opcao = 0
+
+    rodando = True
+    while rodando:
+        tela.fill((0, 0, 0))
+        tela.blit(fundo_menu, (0,0))
+
+        for i, opcao in enumerate(opcoes_lista):
+            color = VERDE if i == selecionar_opcao else BRANCO
+            text = fonte_jogo.render(opcao, True, color)
+            text_centralizar = text.get_rect(center=(LARGURA // 2, 250 + i * 60))
+            tela.blit(text, text_centralizar)
+
+        pygame.display.update()
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_DOWN:
+                    selecionar_opcao = (selecionar_opcao + 1) % len(opcoes_lista)
+                if evento.key == pygame.K_UP:
+                    selecionar_opcao = (selecionar_opcao - 1) % len(opcoes_lista)
+                if evento.key == pygame.K_RETURN:
+                    if selecionar_opcao == 0:  # Ativar/desativar som
+                        som_ativo = not som_ativo
+                        if som_ativo:
+                            pygame.mixer.music.play(-1)
+                            opcoes_lista[0] = "Som: ON"
+                        else:
+                            pygame.mixer.music.stop()
+                            opcoes_lista[0] = "Som: OFF"
+                    elif selecionar_opcao == 1:  # Mudar resolução
+                        resolucao_atual = (resolucao_atual + 1) % len(RESOLUCOES)
+                        LARGURA, ALTURA = RESOLUCOES[resolucao_atual]
+                        tela = pygame.display.set_mode((LARGURA, ALTURA))
+                        opcoes_lista[1] = f"Resolução: {LARGURA}x{ALTURA}"
+                    elif selecionar_opcao == 2:  # Voltar ao menu
+                        return
+            
 menu()
 
 # Restart game

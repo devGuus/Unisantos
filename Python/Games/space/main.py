@@ -1,26 +1,47 @@
-import pygame
+import pygame, sys, os
 import random
 import webbrowser
 from pyvidplayer2 import Video
 
-# Inicialização do pygame
+# Função para obter o caminho correto dos arquivos, seja no desenvolvimento ou no executável
+def caminho_relativo(caminho):
+    """Garante que o jogo encontre arquivos corretamente no executável do PyInstaller"""
+    if getattr(sys, 'frozen', False):  # Se estiver rodando como executável
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # Caminho normal durante o desenvolvimento
+    return os.path.join(base, caminho)
+
+# Inicialização do pygame e o mixer
 pygame.init()
+pygame.mixer.init()
+
+# Musicas e efeitos
+som_ativo = pygame.mixer.music.load(caminho_relativo("data/Musicas/DensityTime8bit.mp3"))
+pygame.mixer.music.set_volume(0.5) # Inserindo volume
+pygame.mixer.music.play(-1) # -1 = Loop da musica
+
+tiro_som = pygame.mixer.Sound(caminho_relativo('data/Musicas/ArmaLaser.mp3'))
+tiro_som.set_volume(0.5)
 
 # Configurações da tela
 RESOLUCOES = [(800, 600), (1024, 768), (1280, 720)]
 resolucao_atual = 0  # Índice da resolução atual
 LARGURA, ALTURA = RESOLUCOES[resolucao_atual]
 tela = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption("Jogo de Tiro")
+pygame.display.set_caption("Space Game")
 
 # Cores
 BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
 VERDE = (0, 255, 0)
 AZUL = (0, 0, 255)
+ROXO = (140, 4, 97)
+color_score = (255,215,0)
+color_pause = ()
 
 # Fonte personalizada (Press Start 2P)
-fonte_jogo = pygame.font.Font("Python/Games/space/Fonts/8-bit Arcade In.ttf", 60)
+fonte_jogo = pygame.font.Font(caminho_relativo("data/Fonts/8-bit Arcade In.ttf"), 60)
 
 # Placar
 score = 0
@@ -55,21 +76,21 @@ menu_opcoes = ["Iniciar Jogo", "Opçoes", "Sair"]
 selecionar_opcoes = 0
 
 # Vídeo menu
-video_menu = Video('Python/Games/space/movies/video_menu.mp4')
+video_menu = Video(caminho_relativo('data/movies/video_menu.mp4'))
 
 # Carregamento de imagens
 try:
-    # Background
-    bg_image = pygame.image.load('Python/Games/space/imagens/bg_espaço_roxo.png') 
-    fundo_menu = pygame.image.load('Python/Games/space/imagens/imagem-fundo2.jpg')
-    # Redimensionar imagem player
-    nave_player = pygame.image.load('Python/Games/space/imagens/nave.png')
-    nave_player = pygame.transform.scale(nave_player, (50, 50)) 
-    # Redimensionar imagem inimigo
-    nave_enemy = pygame.image.load('Python/Games/space/imagens/enemy_nave.png')
+    # Carregar imagens
+    bg_image = pygame.image.load(caminho_relativo('data/imagens/bg_espaço_roxo.png'))
+    fundo_menu = pygame.image.load(caminho_relativo('data/imagens/imagem-fundo3.jpg'))
+    # Redimensionar imagem do player
+    nave_player = pygame.image.load(caminho_relativo('data/imagens/nave.png'))
+    nave_player = pygame.transform.scale(nave_player, (50, 50))
+    # Redimensionar imagem do inimigo
+    nave_enemy = pygame.image.load(caminho_relativo('data/imagens/enemy_nave.png'))
     nave_enemy = pygame.transform.scale(nave_enemy, (inimigo_width, inimigo_height))
-    # Icone do GitHub
-    github_icone = pygame.image.load('Python/Games/space/imagens/icone_github.png')
+    # Carregar ícone do GitHub
+    github_icone = pygame.image.load(caminho_relativo('data/imagens/icone_github.png'))
     github_icone = pygame.transform.scale(github_icone, (40, 40))
 except pygame.error as e:
     print(f"Erro ao carregar imagens: {e}")
@@ -82,7 +103,7 @@ def draw_menu():
     tela.blit(fundo_menu, (0,0))
 
     for i, option in enumerate(menu_opcoes):
-        color = VERDE if i == selecionar_opcoes else BRANCO
+        color = ROXO if i == selecionar_opcoes else BRANCO
         text = fonte_jogo.render(option, True, color)
         text_centralizar = text.get_rect(center=(LARGURA // 2, 250 + i * 60))
         tela.blit(text, text_centralizar)
@@ -113,7 +134,7 @@ def menu():
                         opcoes()
                     elif selecionar_opcoes == 2:
                         pygame.quit()
-                        exit()
+                        sys.exit()
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 x, y = evento.pos
                 if LARGURA - 50 <= x <= LARGURA and ALTURA - 50 <= y <= ALTURA:
@@ -130,7 +151,7 @@ def opcoes():
         tela.blit(fundo_menu, (0,0))
 
         for i, opcao in enumerate(opcoes_lista):
-            color = VERDE if i == selecionar_opcao else BRANCO
+            color = ROXO if i == selecionar_opcao else BRANCO
             text = fonte_jogo.render(opcao, True, color)
             text_centralizar = text.get_rect(center=(LARGURA // 2, 250 + i * 60))
             tela.blit(text, text_centralizar)
@@ -151,15 +172,15 @@ def opcoes():
                         som_ativo = not som_ativo
                         if som_ativo:
                             pygame.mixer.music.play(-1)
-                            opcoes_lista[0] = "Som: ON"
+                            opcoes_lista[0] = "Som  ON"
                         else:
                             pygame.mixer.music.stop()
-                            opcoes_lista[0] = "Som: OFF"
+                            opcoes_lista[0] = "Som  OFF"
                     elif selecionar_opcao == 1:  # Mudar resolução
                         resolucao_atual = (resolucao_atual + 1) % len(RESOLUCOES)
                         LARGURA, ALTURA = RESOLUCOES[resolucao_atual]
                         tela = pygame.display.set_mode((LARGURA, ALTURA))
-                        opcoes_lista[1] = f"Resolução: {LARGURA}x{ALTURA}"
+                        opcoes_lista[1] = f"Resolucao {LARGURA}x{ALTURA}"
                     elif selecionar_opcao == 2:  # Voltar ao menu
                         return
             
@@ -176,7 +197,8 @@ def restart_game():
 
 # Loop principal
 def main():
-    global score, player_x, life
+    global score, player_x, life, fonte_jogo, inimigo_vel
+    global tiro_som
     rodando = True
     pausado = False
     while rodando:
@@ -188,17 +210,9 @@ def main():
                 rodando = False
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_p:
-                    pausado = not pausado
-                if evento.key == pygame.K_r and life < 1:
+                    menu()
+                if evento.key == pygame.K_r or life < 1:
                     restart_game()
-        
-        if pausado:
-            newFont = pygame.font.SysFont("comicsansms", 115)
-            pause_text = newFont.render(f'Pausado', False, (0, 255, 0))
-            centralizar = pause_text.get_rect(center=(LARGURA // 2, ALTURA // 2))
-            tela.blit(pause_text, centralizar)
-            pygame.display.flip()
-            continue
         
         # Controles do jogador
         teclas = pygame.key.get_pressed()
@@ -208,6 +222,7 @@ def main():
             player_x += player_vel
         if teclas[pygame.K_SPACE]:
             balas.append(pygame.Rect(player_x + player_width // 2 - bala_width // 2, player_y, bala_width, bala_height))
+            tiro_som.play()
         
         # Movimentação das balas
         for bala in balas[:]:
@@ -219,7 +234,6 @@ def main():
         if random.randint(1, 60) == 1:
             inimigos.append({"rect": pygame.Rect(random.randint(0, LARGURA - inimigo_width), 0, inimigo_width, inimigo_height), "img": nave_enemy})
 
-        
         # Movimentação dos inimigos e eliminação
         for inimigo in inimigos[:]:
             inimigo["rect"].y += inimigo_vel
@@ -238,6 +252,18 @@ def main():
                     score += 1
                     break           
 
+        # Aumento de nivel de dificuldade 
+        if score == 25:
+            inimigo_vel += 0.01
+        elif score == 50:
+            inimigo_vel += 0.01
+        elif score == 75:
+            inimigo_vel += 0.01
+        elif score == 100:
+            inimigo_vel += 0.01
+        elif score == 125:
+            inimigo_vel += 0.01
+
         # Desenho na tela
         tela.blit(bg_image, (0, 0))
         tela.blit(nave_player, (player_x, player_y))  # Desenhando a nave no lugar do retângulo azul
@@ -250,11 +276,11 @@ def main():
         
         # Desenhando Score
         font = pygame.font.Font(None, 48)
-        score_text = font.render(f'Pontos: {score}', True, (0, 255, 0))
+        score_text = font.render(f'Pontos: {score}', True, (215, 215, 0))
         tela.blit(score_text, (10, 10))
 
         # Vida do Player
-        life_text = font.render(f'Vida: {life}', True, (0, 255, 0))
+        life_text = font.render(f'Vida: {life}', True, (215, 215, 0))
         tela.blit(life_text, (680, 10))
 
         if life < 1:

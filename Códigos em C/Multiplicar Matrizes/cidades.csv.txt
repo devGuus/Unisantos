@@ -1,0 +1,6 @@
+estado,cidade
+SP,Santos
+SP,SV
+SP,PG
+RJ,RJ
+RJ,Niteroi
